@@ -13,7 +13,6 @@
             min-height: 100vh; overflow: hidden; color: #4a4a4a;
         }
 
-        /* Dekorasi Love Melayang */
         .floating-heart {
             position: fixed; font-size: 20px; color: #ffb3c1; opacity: 0.6;
             animation: moveHeart 6s infinite ease-in-out; pointer-events: none; z-index: 1;
@@ -23,12 +22,10 @@
             100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
         }
 
-        /* Container Utama */
         #quiz-container, .container {
             text-align: center; z-index: 10; width: 90%; max-width: 500px;
         }
 
-        /* Font Estetik untuk Judul/Pesan Utama */
         h1, h2, .estetik-font {
             font-family: 'Dancing Script', cursive;
             color: #ff85a2;
@@ -39,21 +36,113 @@
         h2 { font-size: 2.2rem; margin: 10px 0; }
         p { line-height: 1.8; font-size: 1.2rem; font-weight: 500; }
 
-        /* Tombol Sejajar & Rapih */
+        /* Tombol Sejajar */
         .btn-group {
-            margin-top: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 30px; /* Jarak antar tombol agar tidak numpuk */
-            min-height: 60px;
-            position: relative;
+            margin-top: 40px; display: flex; justify-content: center;
+            align-items: center; gap: 20px; min-height: 60px;
         }
         
         button {
-            padding: 12px 35px; border-radius: 25px; border: none;
+            padding: 12px 30px; border-radius: 25px; border: none;
             cursor: pointer; font-weight: bold; font-family: 'Quicksand', sans-serif;
             transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
-        #yes-btn { background: #ff85a2; color: white;
+        #yes-btn { background: #ff85a2; color: white; font-size: 1.1rem; }
+        #no-btn { background: #e0e0e0; color: #666; font-size: 1.1rem; position: relative; }
+
+        .nav-btn, .pantun-btn { background: #ff85a2; color: white; margin-top: 25px; }
+
+        .page { display: none; animation: fadeIn 1s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<audio id="bgm" loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
+</audio>
+
+<div id="hearts-wrapper"></div>
+
+<div id="quiz-container">
+    <h2 class="estetik-font">Who is Birthday Boy?</h2>
+    <h2 class="estetik-font">Are you? Are you?</h2>
+    <div class="btn-group">
+        <button id="yes-btn" onclick="startSurprise()">YES!</button>
+        <button id="no-btn" onmouseover="moveNo()" onclick="moveNo()">NO</button>
+    </div>
+</div>
+
+<div class="container" id="wish-container" style="display:none;">
+    <div id="page1" class="page" style="display:block;">
+        <h1>Selamat ulang tahun opikpikpik.</h1>
+        <p>you've did a great job for the entire years sayangku. <br>keyen cekayiii. ✨</p>
+        <button class="nav-btn" onclick="nextPage(1)">Lanjut ⮕</button>
+    </div>
+
+    <div id="page2" class="page">
+        <p>25 tahun, ciyeee. Angka yang unik ya? <br> Di atas 20, di bawah 30, <br><b class="estetik-font" style="font-size: 1.5rem;">tepat di tengah-tengahnya.</b></p>
+        <p>Usia di mana kamu bukan lagi anak-anak tanpa beban, ataupun orang dewasa yang seutuhnya kaku, <br><b>kamu cuma kamu.</b></p>
+        <button class="nav-btn" onclick="nextPage(2)">Lanjut ⮕</button>
+    </div>
+
+    <div id="page3" class="page">
+        <p>Orang-orang mungkin bakal banyak yang ngucapin selamat ulang tahun.</p>
+        <p>Tapi aku bener-bener berharap kamu <b class="estetik-font" style="font-size: 1.5rem;">selamat</b>.</p>
+        <p>Selamat dari semua pertarungan dunia yang gak pernah bisa kamu ceritakan ke siapapun. </p>
+        <button class="nav-btn" onclick="nextPage(3)">Lanjut ⮕</button>
+    </div>
+
+    <div id="page4" class="page">
+        <p class="estetik-font" style="font-size: 2rem;">ada gula<br>di gentenk</p>
+        <button class="nav-btn" onclick="nextPage(4)">(chakeppp)</button>
+    </div>
+
+    <div id="page5" class="page">
+        <p class="estetik-font" style="font-size: 2rem;">happy birthday ya<br>gantenkkk</p>
+        <button class="nav-btn" onclick="nextPage(5)">(angjhaaay)</button>
+    </div>
+
+    <div id="page6" class="page">
+        <h1 style="font-size: 3rem;">Wish you all the best <br> My beloved. ❤️</h1>
+        <button class="nav-btn" style="background: #666;" onclick="location.reload()">Tutup</button>
+    </div>
+</div>
+
+<script>
+    // Inisialisasi hati
+    const wrapper = document.getElementById('hearts-wrapper');
+    for (let i = 0; i < 15; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'floating-heart';
+        heart.innerText = '❤️';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDelay = Math.random() * 5 + 's';
+        wrapper.appendChild(heart);
+    }
+
+    function moveNo() {
+        const btn = document.getElementById('no-btn');
+        const x = Math.random() * (window.innerWidth - 100);
+        const y = Math.random() * (window.innerHeight - 50);
+        btn.style.position = 'fixed';
+        btn.style.left = x + 'px';
+        btn.style.top = y + 'px';
+    }
+
+    function startSurprise() {
+        const music = document.getElementById('bgm');
+        music.play().catch(e => console.log("Musik butuh interaksi user"));
+        document.getElementById('quiz-container').style.display = 'none';
+        document.getElementById('wish-container').style.display = 'block';
+    }
+
+    function nextPage(curr) {
+        document.getElementById('page' + curr).style.display = 'none';
+        document.getElementById('page' + (curr + 1)).style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
