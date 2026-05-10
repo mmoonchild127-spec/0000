@@ -3,92 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Selamat 25, Opikpikpik</title>
+    <title>Surprise!</title>
     <style>
         body {
             margin: 0;
             padding: 0;
-            background: #fff5f5; /* Warna peach lembut */
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #fff5f5;
+            font-family: 'Segoe UI', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            overflow: hidden;
             color: #4a4a4a;
+            overflow: hidden;
         }
 
-        .container {
+        /* --- Gaya Interaktif Awal --- */
+        #quiz-container {
             text-align: center;
+            z-index: 10;
             padding: 20px;
-            z-index: 2;
-            max-width: 500px;
+        }
+
+        .question-box h2 {
+            color: #ff85a2;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .btn-group {
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+
+        #yes-btn {
+            background-color: #ff85a2;
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 133, 162, 0.3);
+        }
+
+        #no-btn {
+            background-color: #e0e0e0;
+            color: #666;
+        }
+
+        /* --- Gaya Kartu Ucapan (Tersembunyi di awal) --- */
+        #main-content {
+            display: none;
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            box-sizing: border-box;
+            animation: zoomIn 0.8s ease-out;
         }
 
         .card {
             background: white;
-            padding: 40px;
+            padding: 30px 20px;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeIn 1.5s forwards ease-out;
+            text-align: center;
         }
 
-        h1 {
-            color: #ff85a2;
-            font-size: 2rem;
-            margin-bottom: 20px;
+        @keyframes zoomIn {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
 
-        p {
-            line-height: 1.8;
-            font-size: 1.1rem;
-            margin-bottom: 15px;
-        }
+        h1 { color: #ff85a2; font-size: 1.8rem; margin-bottom: 15px; }
+        p { line-height: 1.6; font-size: 1rem; margin-bottom: 12px; }
+        .highlight { font-weight: bold; color: #ff85a2; }
+        .deep-wish { margin-top: 20px; font-style: italic; color: #6a6a6a; border-top: 1px solid #eee; padding-top: 15px; }
 
-        .highlight {
-            font-weight: bold;
-            color: #ff85a2;
-        }
-
-        .deep-wish {
-            margin-top: 30px;
-            font-style: italic;
-            color: #6a6a6a;
-            border-top: 1px solid #eee;
-            padding-top: 20px;
-        }
-
-        @keyframes fadeIn {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Dekorasi melayang tanpa gambar */
         .floating {
-            position: absolute;
-            width: 15px;
-            height: 15px;
-            background: #ffb3c1;
-            border-radius: 50%;
-            opacity: 0.6;
+            position: fixed;
+            width: 10px; height: 10px;
+            background: #ffb3c1; border-radius: 50%;
+            opacity: 0.5; z-index: -1;
             animation: move 6s infinite linear;
         }
-
         @keyframes move {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+            0% { transform: translateY(100vh); opacity: 1; }
+            100% { transform: translateY(-10vh); opacity: 0; }
         }
     </style>
 </head>
 <body>
 
-    <div class="floating" style="left: 10%; animation-delay: 0s;"></div>
-    <div class="floating" style="left: 30%; animation-delay: 2s; background: #ffe3e3;"></div>
-    <div class="floating" style="left: 70%; animation-delay: 4s;"></div>
-    <div class="floating" style="left: 90%; animation-delay: 1s; background: #ffd1d1;"></div>
+    <div class="floating" style="left: 15%; animation-delay: 0s;"></div>
+    <div class="floating" style="left: 85%; animation-delay: 3s;"></div>
 
-    <div class="container">
+    <div id="quiz-container">
+        <div class="question-box">
+            <h2>WHO IS BIRTHDAY BOY?</h2>
+            <h2>ARE YOU? ARE YOU?</h2>
+            <div class="btn-group">
+                <button id="yes-btn" onclick="showWish()">YES!</button>
+                <button id="no-btn" onmouseover="moveNo()" onclick="moveNo()">NO</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="main-content">
         <div class="card">
             <h1>Selamat 25, Opikpikpik.</h1>
             <p>25 tahun, ciyeee. Angka yang unik ya? <br> Di atas 20, di bawah 30, <span class="highlight">tepat di tengah-tengahnya.</span></p>
@@ -97,10 +125,36 @@
             
             <div class="deep-wish">
                 <p>Orang-orang mungkin bakal banyak yang ngucapin selamat ulang tahun.</p>
-                <p>Tapi aku bener-bener berharap kamu <strong>selamat</strong>. Dari semua pertarungan dunia yang gak pernah bisa kamu ceritakan ke siapapun.</p>
+                <p>Tapi aku bener-bener berharap kamu <strong>selamat</strong>.</p> 
+                <p>Dari semua pertarungan dunia yang gak pernah bisa kamu ceritakan ke siapapun.</p>
             </div>
         </div>
     </div>
+
+    <script>
+        // Fungsi buat ngerjain tombol NO
+        function moveNo() {
+            const noBtn = document.getElementById('no-btn');
+            // Ganti teks NO jadi YES pas dideketin/diklik
+            noBtn.innerText = "YES";
+            noBtn.style.backgroundColor = "#ff85a2";
+            noBtn.style.color = "white";
+            
+            // Opsional: Bikin tombol NO-nya lari (seru buat di HP)
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+            noBtn.style.position = "absolute";
+            noBtn.style.left = x + "px";
+            noBtn.style.top = y + "px";
+        }
+
+        // Fungsi buat nampilin pesan asli
+        function showWish() {
+            document.getElementById('quiz-container').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+            document.body.style.overflow = 'auto'; // Biar bisa scroll setelah buka
+        }
+    </script>
 
 </body>
 </html>
