@@ -6,242 +6,160 @@
     <title>HBD Opik!</title>
     <style>
         body {
-            margin: 0;
-            padding: 0;
-            background: #fff5f5;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow: hidden;
-            color: #4a4a4a;
+            margin: 0; padding: 0; background: #fff5f5;
+            font-family: 'Segoe UI', sans-serif;
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; overflow: hidden; color: #4a4a4a;
         }
 
-        .container {
-            text-align: center;
-            padding: 20px;
-            z-index: 2;
-            max-width: 500px;
-            display: none; /* Sembunyikan pesan di awal */
-        }
-
-        .card {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeIn 1.5s forwards ease-out;
-        }
-
-        h1 {
-            color: #ff85a2;
-            font-size: 2rem;
-            margin-bottom: 20px;
-        }
-
-        p {
-            line-height: 1.8;
-            font-size: 1.1rem;
-            margin-bottom: 15px;
-        }
-
-        .highlight {
-            font-weight: bold;
-            color: #ff85a2;
-        }
-
-        .deep-wish {
-            margin-top: 30px;
-            font-style: italic;
-            color: #6a6a6a;
-            border-top: 1px solid #eee;
-            padding-top: 20px;
-        }
-
-        .poem {
-            font-style: italic;
-            color: #ff85a2;
-            margin-top: 20px;
-        }
-
-        @keyframes fadeIn {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Dekorasi love melayang */
+        /* Dekorasi Love */
         .floating-heart {
-            position: absolute;
-            font-size: 20px;
-            color: #ffb3c1;
-            opacity: 0.6;
-            animation: moveHeart 6s infinite ease-in-out;
-            pointer-events: none; /* Biar gak ganggu klik */
+            position: fixed; font-size: 20px; color: #ffb3c1; opacity: 0.6;
+            animation: moveHeart 5s infinite ease-in-out; pointer-events: none; z-index: 1;
         }
-
         @keyframes moveHeart {
-            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
-            50% { transform: translateY(0) rotate(20deg); opacity: 0.8; }
-            100% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+            0% { transform: translateY(100vh) scale(0.5); opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
         }
 
-        /* Gaya Kuis Awal */
-        #quiz-container {
-            text-align: center;
-            z-index: 10;
+        /* Container Utama */
+        #quiz-container, .container {
+            text-align: center; z-index: 10; width: 90%; max-width: 500px;
         }
 
-        #quiz-question {
-            font-size: 1.5rem;
-            color: #ff85a2;
-            margin-bottom: 20px;
+        h2 { color: #ff85a2; font-size: 1.6rem; margin: 10px 0; text-shadow: 1px 1px 2px rgba(255,255,255,0.8); }
+        h1 { color: #ff85a2; font-size: 1.8rem; margin-bottom: 20px; text-shadow: 1px 1px 2px rgba(255,255,255,0.8); }
+        p { line-height: 1.8; font-size: 1.15rem; font-weight: 500; text-shadow: 1px 1px 2px rgba(255,255,255,0.5); }
+
+        /* Tombol */
+        .btn-group {
+            margin-top: 30px; display: flex; justify-content: center;
+            gap: 20px; min-height: 50px; position: relative;
+        }
+        
+        button {
+            padding: 12px 30px; border-radius: 25px; border: none;
+            cursor: pointer; font-weight: bold; transition: 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
-        #quiz-ans-container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            position: relative; /* Buat tombol 'No' lari-lari */
-        }
+        #yes-btn { background: #ff85a2; color: white; }
+        #no-btn { background: #e0e0e0; color: #666; position: absolute; left: 55%; }
 
-        #yes-btn, #no-btn {
-            padding: 10px 30px;
-            border-radius: 20px;
-            cursor: pointer;
-            border: none;
-            font-size: 1rem;
-            transition: 0.3s;
-        }
+        /* Tombol Pantun & Navigasi */
+        .nav-btn, .pantun-btn { background: #ff85a2; color: white; margin-top: 20px; }
+        .pantun-btn { background: #ff4d7d; padding: 10px 25px; font-size: 0.9rem; }
 
-        #yes-btn {
-            background-color: #ff85a2;
-            color: white;
-        }
-
-        #no-btn {
-            background-color: #e0e0e0;
-            color: #666;
-            position: absolute; /* Tombol 'No' bisa pindah */
-        }
-
-        /* Halaman */
-        .page {
-            display: none;
-        }
-
-        #page1 {
-            display: block;
-        }
-
-        #next-btn, #prev-btn {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #ff85a2;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+        .page { display: none; animation: fadeIn 0.8s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <script>
-        const body = document.body;
-        for (let i = 0; i < 20; i++) {
+<audio id="bgm" loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+
+<div id="hearts-wrapper"></div>
+
+<div id="quiz-container">
+    <h2>WHO IS BIRTHDAY BOY?</h2>
+    <h2>ARE YOU? ARE YOU?</h2>
+    <div class="btn-group">
+        <button id="yes-btn" onclick="startSurprise()">YES!</button>
+        <button id="no-btn" onmouseover="moveNo()" onclick="moveNo()">NO</button>
+    </div>
+</div>
+
+<div class="container" id="wish-container" style="display:none;">
+    
+    <div id="page1" class="page" style="display:block;">
+        <h1>Selamat ulang tahun opikpikpik.</h1>
+        <p>you've did a great job for the entire years sayangku. <br>keyen cekayiii. ✨</p>
+        <button class="nav-btn" onclick="nextPage(1)">Lanjut ⮕</button>
+    </div>
+
+    <div id="page2" class="page">
+        <p>25 tahun, ciyeee. Angka yang unik ya? <br> Di atas 20, di bawah 30, <br><b style="color: #ff85a2;">tepat di tengah-tengahnya.</b></p>
+        <p>Usia di mana kamu bukan lagi anak-anak tanpa beban, ataupun orang dewasa yang seutuhnya kaku, <br><b>kamu cuma kamu.</b></p>
+        <button class="nav-btn" onclick="nextPage(2)">Lanjut ⮕</button>
+    </div>
+
+    <div id="page3" class="page">
+        <p>Orang-orang mungkin bakal banyak yang ngucapin selamat ulang tahun.</p>
+        <p>Tapi aku bener-bener berharap kamu <b>selamat</b>.</p>
+        <p>Dari semua pertarungan dunia yang gak pernah bisa kamu ceritakan ke siapapun. 🥺</p>
+        <button class="nav-btn" onclick="nextPage(3)">Lanjut ⮕</button>
+    </div>
+
+    <div id="page4" class="page">
+        <p>ada gula<br>di gentenk</p>
+        <button class="pantun-btn" onclick="nextPage(4)"> (chakeppp) </button>
+    </div>
+
+    <div id="page5" class="page">
+        <p>happy birthday ya<br>gantenkkk</p>
+        <button class="pantun-btn" onclick="nextPage(5)"> (angjhaaay) </button>
+    </div>
+
+    <div id="page6" class="page">
+        <h1 style="font-size: 2.2rem;">Wish you all the best <br> my beloved. ❤️</h1>
+        <button class="nav-btn" style="background: #666;" onclick="resetPage()">Tutup</button>
+    </div>
+</div>
+
+<script>
+    const wrapper = document.getElementById('hearts-wrapper');
+    function createHearts() {
+        wrapper.innerHTML = '';
+        for (let i = 0; i < 15; i++) {
             const heart = document.createElement('div');
-            heart.classList.add('floating-heart');
+            heart.className = 'floating-heart';
             heart.innerText = '❤️';
             heart.style.left = Math.random() * 100 + 'vw';
             heart.style.animationDelay = Math.random() * 5 + 's';
-            body.appendChild(heart);
+            wrapper.appendChild(heart);
         }
-    </script>
+    }
+    createHearts();
 
-    <div id="quiz-container">
-        <h2 id="quiz-question">WHO IS BIRTHDAY BOY?</h2>
-        <h2 id="quiz-question">ARE YOU? ARE YOU?</h2>
-        <div id="quiz-ans-container">
-            <button id="yes-btn" onclick="showWish()">YES</button>
-            <button id="no-btn" onmouseover="moveNo()" onclick="moveNo()">NO</button>
-        </div>
-    </div>
+    function moveNo() {
+        const btn = document.getElementById('no-btn');
+        const x = Math.random() * (window.innerWidth - 100);
+        const y = Math.random() * (window.innerHeight - 50);
+        btn.style.position = 'fixed';
+        btn.style.left = x + 'px';
+        btn.style.top = y + 'px';
+    }
 
-    <div class="container" id="wish-container">
-        <div id="page1" class="page">
-            <div class="card">
-                <h1>Selamat ulang tahun opikpikpik.</h1>
-                <p>you've did a great job for the entire years sayangku. <br>keyen cekayiii.</p>
-                <button id="next-btn" onclick="nextPage(1)">Lanjut</button>
-            </div>
-        </div>
-        <div id="page2" class="page">
-            <div class="card">
-                <p>25 tahun, ciyeee. Angka yang unik ya? <br> Di atas 20, di bawah 30, <span class="highlight">tepat di tengah-tengahnya.</span></p>
-                <p>Usia di mana kamu bukan lagi anak-anak tanpa beban, ataupun orang dewasa yang seutuhnya kaku, <span class="highlight">kamu cuma kamu.</span></p>
-                <button id="prev-btn" onclick="prevPage(2)">Kembali</button>
-                <button id="next-btn" onclick="nextPage(2)">Lanjut</button>
-            </div>
-        </div>
-        <div id="page3" class="page">
-            <div class="card">
-                <div class="deep-wish">
-                    <p>Orang-orang mungkin bakal banyak yang ngucapin selamat ulang tahun.</p>
-                    <p>Tapi aku bener-bener berharap kamu <strong>selamat</strong>. Dari semua pertarungan dunia yang gak pernah bisa kamu ceritakan ke siapapun.</p>
-                </div>
-                <button id="prev-btn" onclick="prevPage(3)">Kembali</button>
-                <button id="next-btn" onclick="nextPage(3)">Lanjut</button>
-            </div>
-        </div>
-        <div id="page4" class="page">
-            <div class="card">
-                <div class="poem">
-                    <p>ada gula</p>
-                    <p>di gentenk</p>
-                    <p>(chakeppp)</p>
-                    <p>happy birthday ya</p>
-                    <p>gantenkkk</p>
-                    <p>(angjhaaay)</p>
-                </div>
-                <button id="prev-btn" onclick="prevPage(4)">Kembali</button>
-            </div>
-        </div>
-    </div>
+    function startSurprise() {
+        const music = document.getElementById('bgm');
+        music.play();
+        document.getElementById('quiz-container').style.display = 'none';
+        document.getElementById('wish-container').style.display = 'block';
+    }
 
-    <script>
-        function showWish() {
-            document.getElementById('quiz-container').style.display = 'none';
-            document.getElementById('wish-container').style.display = 'block';
+    function nextPage(curr) {
+        document.getElementById('page' + curr).style.display = 'none';
+        document.getElementById('page' + (curr + 1)).style.display = 'block';
+    }
+
+    function resetPage() {
+        const music = document.getElementById('bgm');
+        music.pause();
+        music.currentTime = 0;
+        document.getElementById('wish-container').style.display = 'none';
+        document.getElementById('quiz-container').style.display = 'block';
+        for(let i=1; i<=6; i++) {
+            document.getElementById('page'+i).style.display = 'none';
         }
-
-        function moveNo() {
-            const noBtn = document.getElementById('no-btn');
-            const newX = Math.random() * (window.innerWidth - noBtn.offsetWidth - 40);
-            const newY = Math.random() * (window.innerHeight - noBtn.offsetHeight - 40);
-            noBtn.style.left = `${newX}px`;
-            noBtn.style.top = `${newY}px`;
-        }
-
-        function nextPage(currentPage) {
-            const currentElement = document.getElementById(`page${currentPage}`);
-            const nextElement = document.getElementById(`page${currentPage + 1}`);
-            if (nextElement) {
-                currentElement.style.display = 'none';
-                nextElement.style.display = 'block';
-            }
-        }
-
-        function prevPage(currentPage) {
-            const currentElement = document.getElementById(`page${currentPage}`);
-            const prevElement = document.getElementById(`page${currentPage - 1}`);
-            if (prevElement) {
-                currentElement.style.display = 'none';
-                prevElement.style.display = 'block';
-            }
-        }
-    </script>
+        document.getElementById('page1').style.display = 'block';
+        const noBtn = document.getElementById('no-btn');
+        noBtn.style.position = 'absolute';
+        noBtn.style.left = '55%';
+        noBtn.style.top = 'auto';
+    }
+</script>
 
 </body>
 </html>
